@@ -1,3 +1,3 @@
 # Expensify App
 
-Andrew Meads udemy react tutorial
+Andrew Mead's udemy react tutorial
