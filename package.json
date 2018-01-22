@@ -7,11 +7,14 @@
     "build:dev": "webpack --env developement",
     "build:prod": "webpack -p --env production",
     "serve": "webpack-dev-server",
-    "test": "jest --config=jest.config.json"
+    "test": "jest --config=jest.config.json",
+    "start": "node server/server.js",
+    "heroku-postbuild": "npm run build:prod"
   },
   "author": "Nick Trabue",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.15.4",
     "extract-text-webpack-plugin": "^3.0.2",
     "moment": "^2.18.1",
     "normalize.css": "^7.0.0",
