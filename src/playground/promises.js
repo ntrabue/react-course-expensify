@@ -1,3 +1,5 @@
+console.log(process.env.NODE_ENV)
+console.log(process.env.FIREBASE_AUTH_DOMAIN);
 const promise = new Promise((res, err) => {
     setTimeout(() => {
         res('This is my resolved data');
