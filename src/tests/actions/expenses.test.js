@@ -7,7 +7,8 @@ import {
   removeExpense,
   setExpenses,
   startSetExpenses,
-  startRemoveExpense
+  startRemoveExpense,
+  startEditExpense
 } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import database from '../../firebase/firebase';
@@ -30,6 +31,22 @@ test('Remove expense should remove an expense', () => {
   });
 });
 
+test('should remove an expense from firebase', (done) => {
+  const store = createMockStore({});
+  store.dispatch(startRemoveExpense({ id: expenses[0].id })).then(() => {
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: 'REMOVE_EXPENSE',
+      id: expenses[0].id
+    });
+    return database.ref(`expenses/${expenses[0].id}`).once('value')
+  }).then((data) => {
+    const val = data.val()
+    expect(val).toBeFalsy();
+    done();
+  });
+});
+
 test('Edit expense should correctly change an expense', () => {
   const action = editExpense('123abc', { note: 'New Note Value' });
   expect(action).toEqual({
@@ -40,6 +57,30 @@ test('Edit expense should correctly change an expense', () => {
     }
   });
 });
+test('Should edit expense in firebase', (done) => {
+  const store = createMockStore({});
+  const id = expenses[1].id;
+  const updates = {
+    description: 'Rent Update',
+    amount: 109550,
+    note: 'updated note',
+  }
+  store.dispatch(startEditExpense(id, updates)).then(() => {
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: 'EDIT_EXPENSE',
+      id,
+      updates
+    });
+    return database.ref(`expenses/${id}`).once('value')
+  }).then((data) => {
+    expect(data.val()).toEqual({
+      createdAt: expect.any(Number),
+      ...updates
+    })
+    done();
+  })
+})
 
 test('Should setup a new expense with provided values', () => {
   const action = addExpense(expenses[2]);
@@ -117,18 +158,6 @@ test('should fetch the expenses from firebase', (done) => {
   });
 });
 
-test('should remove an expense from firebase', (done) => {
-  const store = createMockStore({});
-  store.dispatch(startRemoveExpense({ id: expenses[0].id })).then(() => {
-    const actions = store.getActions();
-    expect(actions[0]).toEqual({
-      type: 'REMOVE_EXPENSE',
-      id: expenses[0].id
-    });
-    return database.ref(`expenses/${expenses[0].id}`).once('value')
-  }).then((data) => {
-    const val = data.val()
-    expect(val).toBeFalsy();
-    done();
-  });
-});
+
+
+
