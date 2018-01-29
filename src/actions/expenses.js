@@ -66,7 +66,6 @@ export const startSetExpenses = () => {
       .then((data) => {
         const expenses = [];
         data.forEach((childData) => {
-          console.log(childData.val())
           expenses.push({
             id: childData.key,
             ...childData.val()
