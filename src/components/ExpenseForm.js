@@ -9,6 +9,7 @@ class ExpenseForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: props.expense ? props.expense.id : '',
       description: props.expense ? props.expense.description : '',
       note: props.expense ? props.expense.note : '',
       amount: props.expense ? (props.expense.amount / 100).toString() : '',
@@ -71,7 +72,9 @@ class ExpenseForm extends React.Component {
             isOutsideRange={() => false}
           />
           <textarea placeholder="Add a note for your expense (optional)" value={this.state.note} onChange={this.onNoteChange} />
-          <button type="submit">Add Expense</button>
+          <button type="submit">
+            {this.state.id ? <span>Edit Expense</span> : <span>Add Expense</span>}
+          </button>
         </form>
       </div>
     );
