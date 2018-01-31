@@ -3,6 +3,7 @@ import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
 
 
+
 const now = moment();
 
 class ExpenseForm extends React.Component {
@@ -58,11 +59,10 @@ class ExpenseForm extends React.Component {
   render() {
     return (
       <div>
-        <h1>Add Expense</h1>
-        {this.state.error && <p>{this.state.error}</p>}
-        <form name="expense-form" id="expense-form" onSubmit={this.onSubmit}>
-          <input type="text" name="details" placeholder="Description" value={this.state.description} onChange={this.onDescriptionChange} autoFocus />
-          <input type="tel" name="amount" placeholder="Amount" value={this.state.amount} onChange={this.onAmountChange} />
+        {this.state.error && <p className="form__error">{this.state.error}</p>}
+        <form name="expense-form" className="form" id="expense-form" onSubmit={this.onSubmit}>
+          <input type="text" className="text-input" name="details" placeholder="Description" value={this.state.description} onChange={this.onDescriptionChange} autoFocus />
+          <input type="tel" className="text-input" name="amount" placeholder="Amount" value={this.state.amount} onChange={this.onAmountChange} />
           <SingleDatePicker
             date={this.state.createdAt}
             onDateChange={this.onDateChange}
@@ -71,10 +71,12 @@ class ExpenseForm extends React.Component {
             numberOfMonths={1}
             isOutsideRange={() => false}
           />
-          <textarea placeholder="Add a note for your expense (optional)" value={this.state.note} onChange={this.onNoteChange} />
-          <button type="submit">
-            {this.state.id ? <span>Edit Expense</span> : <span>Add Expense</span>}
-          </button>
+          <textarea className="textarea" placeholder="Add a note for your expense (optional)" value={this.state.note} onChange={this.onNoteChange} />
+          <div>
+            <button className="button" type="submit">
+              {this.state.id ? <span>Update Expense</span> : <span>Add Expense</span>}
+            </button>
+          </div>
         </form>
       </div>
     );
